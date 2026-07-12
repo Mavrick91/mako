@@ -87,6 +87,7 @@ export const TAB_KIND_ICONS = {
   "app-file": FileCode,
   "app-binding": Database,
   "app-v2": AppWindowMac,
+  "app-v2-file": FileCode,
   plan: ClipboardList,
   "dbt-file": FileCode,
   "dbt-job": CalendarClock,
