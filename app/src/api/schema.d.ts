@@ -2433,23 +2433,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/workspaces/{workspaceId}/mcp-servers/{id}/oauth/client": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Save a pre-registered OAuth app (client ID + secret) for an MCP server */
-        put: operations["put_api_workspaces_workspaceId_mcp_servers_id_oauth_client"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/workspaces/{workspaceId}/mcp-servers/{id}/oauth/connect": {
         parameters: {
             query?: never;
@@ -2545,23 +2528,6 @@ export interface paths {
         };
         /** List MCP connector presets */
         get: operations["get_api_mcp_presets"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/mcp/presets/{type}/icon.svg": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get MCP preset icon */
-        get: operations["get_api_mcp_presets_type_icon_svg"];
         put?: never;
         post?: never;
         delete?: never;
@@ -3321,14 +3287,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/workspaces/{workspaceId}/notebook/sources": {
+    "/api/workspaces/{workspaceId}/apps-v2/status-probe": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["get_api_workspaces_workspaceId_notebook_sources"];
+        /** Whether Apps v2 is enabled on this deployment */
+        get: operations["get_api_workspaces_workspaceId_apps_v2_status_probe"];
         put?: never;
         post?: never;
         delete?: never;
@@ -3337,7 +3304,81 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/workspaces/{workspaceId}/notebook/read": {
+    "/api/workspaces/{workspaceId}/apps-v2": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Apps v2 projects */
+        get: operations["get_api_workspaces_workspaceId_apps_v2"];
+        put?: never;
+        /**
+         * Create an Apps v2 project
+         * @description Creates the project record and its Mako-managed bare git repository seeded with a Vite + React scaffold.
+         */
+        post: operations["post_api_workspaces_workspaceId_apps_v2"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/workspaces/{workspaceId}/apps-v2/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get an Apps v2 project */
+        get: operations["get_api_workspaces_workspaceId_apps_v2_id"];
+        put?: never;
+        post?: never;
+        /** Delete an Apps v2 project (repo included) */
+        delete: operations["delete_api_workspaces_workspaceId_apps_v2_id"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/workspaces/{workspaceId}/apps-v2/{id}/files": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List files (committed + uncommitted, sandbox-independent) */
+        get: operations["get_api_workspaces_workspaceId_apps_v2_id_files"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/workspaces/{workspaceId}/apps-v2/{id}/file": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read a file at the actor's latest durable state */
+        get: operations["get_api_workspaces_workspaceId_apps_v2_id_file"];
+        /** Write a file through the actor's worktree (flushes WIP ref) */
+        put: operations["put_api_workspaces_workspaceId_apps_v2_id_file"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/workspaces/{workspaceId}/apps-v2/{id}/exec": {
         parameters: {
             query?: never;
             header?: never;
@@ -3346,53 +3387,26 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["post_api_workspaces_workspaceId_notebook_read"];
+        /**
+         * Run a shell command in the actor's sandbox session
+         * @description Executes in the session working tree via the configured sandbox provider, then flushes the working tree to the durable WIP ref.
+         */
+        post: operations["post_api_workspaces_workspaceId_apps_v2_id_exec"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/api/workspaces/{workspaceId}/notebooks": {
+    "/api/workspaces/{workspaceId}/apps-v2/{id}/status": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["get_api_workspaces_workspaceId_notebooks"];
-        put?: never;
-        post: operations["post_api_workspaces_workspaceId_notebooks"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/workspaces/{workspaceId}/notebooks/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["get_api_workspaces_workspaceId_notebooks_id"];
-        put?: never;
-        post?: never;
-        delete: operations["delete_api_workspaces_workspaceId_notebooks_id"];
-        options?: never;
-        head?: never;
-        patch: operations["patch_api_workspaces_workspaceId_notebooks_id"];
-        trace?: never;
-    };
-    "/api/workspaces/{workspaceId}/notebooks/{id}/artifacts/{artifactId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["get_api_workspaces_workspaceId_notebooks_id_artifacts_artifactId"];
+        /** Worktree status (base, WIP, changed files) */
+        get: operations["get_api_workspaces_workspaceId_apps_v2_id_status"];
         put?: never;
         post?: never;
         delete?: never;
@@ -3401,14 +3415,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/workspaces/{workspaceId}/notebooks/{id}/versions": {
+    "/api/workspaces/{workspaceId}/apps-v2/{id}/history": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["get_api_workspaces_workspaceId_notebooks_id_versions"];
+        /** Commit history of the default branch */
+        get: operations["get_api_workspaces_workspaceId_apps_v2_id_history"];
         put?: never;
         post?: never;
         delete?: never;
@@ -3417,23 +3432,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/workspaces/{workspaceId}/notebooks/{id}/versions/{versionId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["get_api_workspaces_workspaceId_notebooks_id_versions_versionId"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/workspaces/{workspaceId}/notebooks/{id}/versions/{versionId}/restore": {
+    "/api/workspaces/{workspaceId}/apps-v2/{id}/commit": {
         parameters: {
             query?: never;
             header?: never;
@@ -3442,14 +3441,15 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["post_api_workspaces_workspaceId_notebooks_id_versions_versionId_restore"];
+        /** Commit the actor's WIP onto the branch (CAS) */
+        post: operations["post_api_workspaces_workspaceId_apps_v2_id_commit"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/api/workspaces/{workspaceId}/notebooks/{id}/presence": {
+    "/api/workspaces/{workspaceId}/apps-v2/{id}/preview": {
         parameters: {
             query?: never;
             header?: never;
@@ -3458,14 +3458,18 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["post_api_workspaces_workspaceId_notebooks_id_presence"];
+        /**
+         * Build the app in its session and mint a preview link
+         * @description Runs `npm install` (when needed) and `npm run build` in the actor's sandbox session, then returns a short-lived token-gated URL serving the built dist/. The URL is cookie-free and meant for a sandboxed iframe.
+         */
+        post: operations["post_api_workspaces_workspaceId_apps_v2_id_preview"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/api/workspaces/{workspaceId}/notebooks/{id}/sessions": {
+    "/api/workspaces/{workspaceId}/apps-v2/{id}/discard": {
         parameters: {
             query?: never;
             header?: never;
@@ -3474,39 +3478,25 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["post_api_workspaces_workspaceId_notebooks_id_sessions"];
+        /** Discard all uncommitted work and re-base on branch head */
+        post: operations["post_api_workspaces_workspaceId_apps_v2_id_discard"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/api/workspaces/{workspaceId}/notebooks/{id}/sessions/current": {
+    "/api/apps-v2-preview/:token/:assetPath{.*}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["get_api_workspaces_workspaceId_notebooks_id_sessions_current"];
+        /** Serve a built preview asset (token-gated, cookie-free) */
+        get: operations["get_api_apps_v2_preview_token_assetPath"];
         put?: never;
         post?: never;
-        delete: operations["delete_api_workspaces_workspaceId_notebooks_id_sessions_current"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/workspaces/{workspaceId}/notebooks/{id}/executions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["post_api_workspaces_workspaceId_notebooks_id_executions"];
         delete?: never;
         options?: never;
         head?: never;
@@ -4554,47 +4544,6 @@ export interface components {
             /** Format: date-time */
             updatedAt?: string;
             readOnly?: boolean;
-        };
-        NotebookReadRequest: {
-            /** @example 507f1f77bcf86cd799439011 */
-            connectionId: string;
-            /** @example select date, mrr from metrics.mrr */
-            query: string;
-            limit?: number;
-            params?: {
-                [key: string]: unknown;
-            };
-            format?: string;
-        };
-        CreateNotebookRequest: {
-            name?: string;
-            clientId?: string;
-        };
-        RestoreNotebookVersionRequest: {
-            clientId?: string;
-        };
-        UpdateNotebookRequest: {
-            name?: string;
-            blocks?: {
-                id: string;
-                /** @enum {string} */
-                type: "code" | "sql" | "markdown";
-                source: string;
-                connectionId?: string;
-                outputs?: unknown[];
-                executionCount?: number;
-                executedAt?: string;
-            }[];
-            clientId?: string;
-        };
-        NotebookPresenceRequest: {
-            clientId: string;
-            activeCellId?: string | null;
-            gone?: boolean;
-        };
-        NotebookExecuteRequest: {
-            code: string;
-            blockId?: string;
         };
         ConnectorMetadata: {
             type: string;
@@ -12483,54 +12432,6 @@ export interface operations {
             };
         };
     };
-    put_api_workspaces_workspaceId_mcp_servers_id_oauth_client: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                workspaceId: string;
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    clientId: string;
-                    clientSecret?: string;
-                };
-            };
-        };
-        responses: {
-            /** @description Successful response */
-            "2XX": {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GenericJsonResponse"] & (Record<string, never> | null);
-                };
-            };
-            /** @description Invalid request */
-            "4XX": {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
-                };
-            };
-            /** @description Internal server error */
-            "5XX": {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
-                };
-            };
-        };
-    };
     post_api_workspaces_workspaceId_mcp_servers_id_oauth_connect: {
         parameters: {
             query?: never;
@@ -12819,37 +12720,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorEnvelope"];
-                };
-            };
-        };
-    };
-    get_api_mcp_presets_type_icon_svg: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                type: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description SVG icon. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "image/svg+xml": string;
-                };
-            };
-            /** @description Icon not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
                 };
             };
         };
@@ -15804,7 +15674,7 @@ export interface operations {
             };
         };
     };
-    get_api_workspaces_workspaceId_notebook_sources: {
+    get_api_workspaces_workspaceId_apps_v2_status_probe: {
         parameters: {
             query?: never;
             header?: never;
@@ -15844,51 +15714,7 @@ export interface operations {
             };
         };
     };
-    post_api_workspaces_workspaceId_notebook_read: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                workspaceId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["NotebookReadRequest"];
-            };
-        };
-        responses: {
-            /** @description Successful response */
-            "2XX": {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GenericJsonResponse"] & (Record<string, never> | null);
-                };
-            };
-            /** @description Invalid request */
-            "4XX": {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
-                };
-            };
-            /** @description Internal server error */
-            "5XX": {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
-                };
-            };
-        };
-    };
-    get_api_workspaces_workspaceId_notebooks: {
+    get_api_workspaces_workspaceId_apps_v2: {
         parameters: {
             query?: never;
             header?: never;
@@ -15928,7 +15754,7 @@ export interface operations {
             };
         };
     };
-    post_api_workspaces_workspaceId_notebooks: {
+    post_api_workspaces_workspaceId_apps_v2: {
         parameters: {
             query?: never;
             header?: never;
@@ -15939,7 +15765,10 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["CreateNotebookRequest"];
+                "application/json": {
+                    title: string;
+                    description?: string;
+                };
             };
         };
         responses: {
@@ -15972,7 +15801,7 @@ export interface operations {
             };
         };
     };
-    get_api_workspaces_workspaceId_notebooks_id: {
+    get_api_workspaces_workspaceId_apps_v2_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -16013,7 +15842,7 @@ export interface operations {
             };
         };
     };
-    delete_api_workspaces_workspaceId_notebooks_id: {
+    delete_api_workspaces_workspaceId_apps_v2_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -16054,94 +15883,7 @@ export interface operations {
             };
         };
     };
-    patch_api_workspaces_workspaceId_notebooks_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                workspaceId: string;
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateNotebookRequest"];
-            };
-        };
-        responses: {
-            /** @description Successful response */
-            "2XX": {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GenericJsonResponse"] & (Record<string, never> | null);
-                };
-            };
-            /** @description Invalid request */
-            "4XX": {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
-                };
-            };
-            /** @description Internal server error */
-            "5XX": {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
-                };
-            };
-        };
-    };
-    get_api_workspaces_workspaceId_notebooks_id_artifacts_artifactId: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                workspaceId: string;
-                id: string;
-                artifactId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            "2XX": {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GenericJsonResponse"] & (Record<string, never> | null);
-                };
-            };
-            /** @description Invalid request */
-            "4XX": {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
-                };
-            };
-            /** @description Internal server error */
-            "5XX": {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
-                };
-            };
-        };
-    };
-    get_api_workspaces_workspaceId_notebooks_id_versions: {
+    get_api_workspaces_workspaceId_apps_v2_id_files: {
         parameters: {
             query?: never;
             header?: never;
@@ -16182,14 +15924,15 @@ export interface operations {
             };
         };
     };
-    get_api_workspaces_workspaceId_notebooks_id_versions_versionId: {
+    get_api_workspaces_workspaceId_apps_v2_id_file: {
         parameters: {
-            query?: never;
+            query: {
+                path: string;
+            };
             header?: never;
             path: {
                 workspaceId: string;
                 id: string;
-                versionId: string;
             };
             cookie?: never;
         };
@@ -16224,20 +15967,22 @@ export interface operations {
             };
         };
     };
-    post_api_workspaces_workspaceId_notebooks_id_versions_versionId_restore: {
+    put_api_workspaces_workspaceId_apps_v2_id_file: {
         parameters: {
             query?: never;
             header?: never;
             path: {
                 workspaceId: string;
                 id: string;
-                versionId: string;
             };
             cookie?: never;
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["RestoreNotebookVersionRequest"];
+                "application/json": {
+                    path: string;
+                    contents: string;
+                };
             };
         };
         responses: {
@@ -16270,7 +16015,7 @@ export interface operations {
             };
         };
     };
-    post_api_workspaces_workspaceId_notebooks_id_presence: {
+    post_api_workspaces_workspaceId_apps_v2_id_exec: {
         parameters: {
             query?: never;
             header?: never;
@@ -16280,9 +16025,13 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody: {
+        requestBody?: {
             content: {
-                "application/json": components["schemas"]["NotebookPresenceRequest"];
+                "application/json": {
+                    command: string;
+                    cwd?: string;
+                    timeoutMs?: number;
+                };
             };
         };
         responses: {
@@ -16315,7 +16064,7 @@ export interface operations {
             };
         };
     };
-    post_api_workspaces_workspaceId_notebooks_id_sessions: {
+    get_api_workspaces_workspaceId_apps_v2_id_status: {
         parameters: {
             query?: never;
             header?: never;
@@ -16356,9 +16105,11 @@ export interface operations {
             };
         };
     };
-    get_api_workspaces_workspaceId_notebooks_id_sessions_current: {
+    get_api_workspaces_workspaceId_apps_v2_id_history: {
         parameters: {
-            query?: never;
+            query?: {
+                limit?: number;
+            };
             header?: never;
             path: {
                 workspaceId: string;
@@ -16397,7 +16148,7 @@ export interface operations {
             };
         };
     };
-    delete_api_workspaces_workspaceId_notebooks_id_sessions_current: {
+    post_api_workspaces_workspaceId_apps_v2_id_commit: {
         parameters: {
             query?: never;
             header?: never;
@@ -16407,52 +16158,136 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            "2XX": {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GenericJsonResponse"] & (Record<string, never> | null);
-                };
-            };
-            /** @description Invalid request */
-            "4XX": {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
-                };
-            };
-            /** @description Internal server error */
-            "5XX": {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
-                };
-            };
-        };
-    };
-    post_api_workspaces_workspaceId_notebooks_id_executions: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                workspaceId: string;
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
+        requestBody?: {
             content: {
-                "application/json": components["schemas"]["NotebookExecuteRequest"];
+                "application/json": {
+                    message: string;
+                };
             };
         };
+        responses: {
+            /** @description Successful response */
+            "2XX": {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericJsonResponse"] & (Record<string, never> | null);
+                };
+            };
+            /** @description Invalid request */
+            "4XX": {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal server error */
+            "5XX": {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    post_api_workspaces_workspaceId_apps_v2_id_preview: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspaceId: string;
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            "2XX": {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericJsonResponse"] & (Record<string, never> | null);
+                };
+            };
+            /** @description Invalid request */
+            "4XX": {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal server error */
+            "5XX": {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    post_api_workspaces_workspaceId_apps_v2_id_discard: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspaceId: string;
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            "2XX": {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericJsonResponse"] & (Record<string, never> | null);
+                };
+            };
+            /** @description Invalid request */
+            "4XX": {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal server error */
+            "5XX": {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    get_api_apps_v2_preview_token_assetPath: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                token: string;
+                assetPath: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             /** @description Successful response */
             "2XX": {
