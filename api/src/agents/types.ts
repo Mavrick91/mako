@@ -72,6 +72,10 @@ export interface AgentContext {
     | "connectors"
     | "flows"
     | "dashboards"
+    | "apps"
+    | "apps-v2"
+    | "dbt"
+    | "settings"
     | null;
   /** Current user ID (if session auth) */
   userId?: string;
