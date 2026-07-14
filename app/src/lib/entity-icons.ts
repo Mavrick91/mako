@@ -28,6 +28,7 @@ import {
   Database,
   FileCode,
   GitBranch,
+  Github,
   History,
   KeySquare,
   MessageCircleMore,
@@ -111,5 +112,6 @@ export const SETTINGS_SECTION_ICONS = {
   members: Users,
   "api-keys": KeySquare,
   appearance: Palette,
+  github: Github,
   admin: ShieldCheck,
 } as const satisfies Record<SettingsSection, LucideIcon>;
