@@ -5369,6 +5369,14 @@ export interface IAppProjectV2 extends Document {
   owner_id?: string;
   createdBy: string;
   defaultBranch: string;
+  /**
+   * Mako-hosted GitHub mirror (cloud tier): a private repo under the
+   * MAKO_CLOUD_GITHUB_ORG org that every commit is mirror-pushed to. Absent
+   * for projects created before cloud repos existed or when the cloud app is
+   * not configured. Auth comes from cloud-app-auth.ts (Mako's own app), NOT
+   * the per-workspace BYO installation.
+   */
+  cloudRepo?: { owner: string; repo: string };
   /** Commit SHA of the last published deployment (Phase 3). */
   publishedSha?: string;
   createdAt: Date;
@@ -5394,6 +5402,16 @@ const AppProjectV2Schema = new Schema<IAppProjectV2>(
     owner_id: { type: String, index: true },
     createdBy: { type: String, required: true },
     defaultBranch: { type: String, default: "main" },
+    cloudRepo: {
+      type: new Schema(
+        {
+          owner: { type: String, required: true },
+          repo: { type: String, required: true },
+        },
+        { _id: false },
+      ),
+      default: undefined,
+    },
     publishedSha: { type: String },
   },
   { collection: "app_projects_v2", timestamps: true },
