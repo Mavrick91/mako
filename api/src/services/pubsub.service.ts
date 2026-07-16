@@ -27,6 +27,7 @@
  *     publishers and subscribers can see each other.
  */
 import { EventEmitter } from "node:events";
+import { randomUUID } from "node:crypto";
 import { Redis } from "ioredis";
 import type { Publisher, Subscriber } from "resumable-stream/generic";
 import { loggers } from "../logging";
@@ -179,6 +180,66 @@ function getInMemoryPubSub(): InMemoryPubSub {
 /** Which backend the process is using ("redis" when REDIS_URL is set). */
 export function getPubSubBackendKind(): "redis" | "memory" {
   return process.env.REDIS_URL ? "redis" : "memory";
+}
+
+/**
+ * Diagnostic probe for the pub/sub backend, for a health endpoint. Memory mode
+ * is always "healthy" locally, but on a multi-instance deploy it means realtime
+ * (presence, pokes), durable kernel sessions, and stream resume are all silently
+ * single-instance. Redis mode does a real **publish→subscribe round-trip** — a
+ * plain PING passes even when the backend is over its request quota (the exact
+ * Upstash failure this file warns about), whereas the round-trip exercises the
+ * pub/sub path realtime actually uses. Never surfaces the connection string; the
+ * failure detail goes to logs, not the response.
+ */
+export async function probePubSubBackend(): Promise<{
+  kind: "redis" | "memory";
+  ok: boolean;
+  roundTripMs?: number;
+}> {
+  const redisUrl = process.env.REDIS_URL;
+  if (!redisUrl) return { kind: "memory", ok: true };
+
+  const opts = {
+    lazyConnect: true,
+    maxRetriesPerRequest: 1,
+    connectTimeout: 2_000,
+    enableOfflineQueue: false,
+  } as const;
+  const sub = new Redis(redisUrl, opts);
+  const pub = new Redis(redisUrl, opts);
+  sub.on("error", () => undefined);
+  pub.on("error", () => undefined);
+
+  const channel = `mako:pubsub-probe:${randomUUID()}`;
+  const token = randomUUID();
+  try {
+    await Promise.all([sub.connect(), pub.connect()]);
+    const startedAt = Date.now();
+    const delivered = new Promise<boolean>(resolve => {
+      const timer = setTimeout(() => resolve(false), 2_000);
+      sub.on("message", (ch, msg) => {
+        if (ch === channel && msg === token) {
+          clearTimeout(timer);
+          resolve(true);
+        }
+      });
+    });
+    await sub.subscribe(channel);
+    await pub.publish(channel, token);
+    const ok = await delivered;
+    return {
+      kind: "redis",
+      ok,
+      ...(ok ? { roundTripMs: Date.now() - startedAt } : {}),
+    };
+  } catch (error) {
+    logger.warn("pub/sub round-trip probe failed", { error });
+    return { kind: "redis", ok: false };
+  } finally {
+    sub.disconnect();
+    pub.disconnect();
+  }
 }
 
 /**

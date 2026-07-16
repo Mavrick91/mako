@@ -28,7 +28,10 @@ import mongoose from "mongoose";
 import { databaseConnectionService } from "./services/database-connection.service";
 import { sshTunnelManager } from "./services/ssh-tunnel.service";
 import { loggers, loggingMiddleware } from "./logging";
-import { checkPubSubBackendHealth } from "./services/pubsub.service";
+import {
+  checkPubSubBackendHealth,
+  probePubSubBackend,
+} from "./services/pubsub.service";
 import { warmPricingCache } from "./services/gateway-pricing.service";
 import { warmCatalog } from "./services/model-catalog.service";
 import { discoverSystemSkills } from "./agent-lib/skills/system-skills";
@@ -139,6 +142,26 @@ app.notFound(c => c.json({ success: false, error: "Not Found" }, 404));
 // Health check
 app.get("/health", c => {
   return c.json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+// Realtime backend diagnostic (public, no secrets). Reveals whether this
+// instance's pub/sub is Redis-backed and reachable. `pubsub: "memory"` on a
+// multi-instance deploy means cross-instance realtime (presence, pokes),
+// durable kernel sessions, and resumable-stream resume are all silently
+// degraded — a fast way to confirm REDIS_URL wiring from outside.
+app.get("/health/realtime", async c => {
+  const backend = await probePubSubBackend();
+  return c.json({
+    status: backend.ok ? "ok" : "degraded",
+    pubsub: backend.kind,
+    // Real publish->subscribe round-trip (not just PING) — this is what
+    // realtime actually needs, and what "Redis healthy" (ping-only) can't see.
+    pubsubRoundTrip: backend.ok,
+    ...(backend.roundTripMs !== undefined
+      ? { roundTripMs: backend.roundTripMs }
+      : {}),
+    timestamp: new Date().toISOString(),
+  });
 });
 
 // OAuth discovery for the Mako MCP endpoint (RFC 9728 + RFC 8414). Root-level
